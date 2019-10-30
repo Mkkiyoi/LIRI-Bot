@@ -6,6 +6,7 @@ let axios = require('axios');
 let moment = require('moment');
 let fs = require('fs');
 
+
 let command;
 if (!process.argv[2]) {
     console.log('Need to provide a command as an argument.');
@@ -20,7 +21,6 @@ function axiosCall(input) {
     } else {
         queryURL = 'http://www.omdbapi.com/?apikey=ef2f0ffe&t=' + input;
     }
-    console.log(queryURL)
     return axios.get(queryURL).then((response) => {
         return response.data;
     }).catch(function(error) {
@@ -50,20 +50,29 @@ function liri(command, input) {
             let artist = input;
             let queryURL = 'https://rest.bandsintown.com/artists/' + artist + '/events?app_id=codingbootcamp';
             axiosCall(artist).then(response => {
-                console.log('Events for ' + artist.replace('+', ' ') + ':');
-                console.log('---------------------------------------------------');
+                let output = '';
+                output += 'Events for ' + artist.replace('+', ' ') + ':' + '\n';
+                output += '---------------------------------------------------' + '\n';
                 for(let i = 0; i < 10; i++) {
-                    console.log('Venue:             ' + response[i].venue.name);
+                    output += 'Venue:             ' + response[i].venue.name + '\n';
                     let location = response[i].venue.city;
                     let region = response[i].venue.region;
                     if (region != '') {
                         location += ', ' + region;
                     }
                     location += ', ' + response[i].venue.country;
-                    console.log('Venue Location:    ' + location);
-                    console.log('Date of the event: ' + moment(response[i].datetime).format('MM/DD/YYYY'));
-                    console.log('---------------------------------------------------');
+                    output += 'Venue Location:    ' + location + '\n';
+                    output += 'Date of the event: ' + moment(response[i].datetime).format('MM/DD/YYYY') + '\n';
+                    output += '---------------------------------------------------' + '\n';
                 }
+                console.log(output);
+                fs.appendFile('output.txt', output + '\n\n', function(error) {
+                    if (error) {
+                        console.log(err);
+                    } else {
+                        console.log("Content Added!");
+                    }
+                });
             }).catch(function(error) {
                 console.log(error)
             });
@@ -72,10 +81,19 @@ function liri(command, input) {
             if (!input) {
                 spotify.request('https://api.spotify.com/v1/tracks/0hrBpAOgrt8RXigk83LLNE')
                     .then(function(data) {
-                        console.log('Artist:       ' + data.artists[0].name);
-                        console.log('Song Name:    ' + data.name);
-                        console.log('Preview Link: ' + data.preview_url);
-                        console.log('Album:        ' + data.album.name);
+                        let output = '';
+                        output += 'Artist:       ' + data.artists[0].name + '\n';
+                        output += 'Song Name:    ' + data.name + '\n';
+                        output += 'Preview Link: ' + data.preview_url + '\n';
+                        output += 'Album:        ' + data.album.name + '\n';
+                        console.log(output);
+                        fs.appendFile('output.txt', output + '\n\n', function(error) {
+                            if (error) {
+                              console.log(err);
+                            } else {
+                              console.log("Content Added!");
+                            }
+                        });
                     })
                     .catch(function(err) {
                         console.error('Error occurred: ' + err); 
@@ -85,20 +103,29 @@ function liri(command, input) {
                     if (error) {
                         return console.log('Error occurred: ' + error);
                     }
-                    console.log('Songs found for song name: ' + input.split('+').join(' '));
+                    let output = '';
+                    output += 'Songs found for song name: ' + input.split('+').join(' ') + '\n';
                     for (let i = 0; i < 10; i ++) { 
-                        console.log('---------------------------------------------------');
-                        console.log('Artist:       ' + data.tracks.items[i].artists[0].name);
-                        console.log('Song Name:    ' + data.tracks.items[i].name);
+                        output += '---------------------------------------------------' + '\n';
+                        output += 'Artist:       ' + data.tracks.items[i].artists[0].name + '\n';
+                        output += 'Song Name:    ' + data.tracks.items[i].name + '\n';
                         let preview = data.tracks.items[i].preview_url;
                         if (preview !== null) {
-                            console.log('Preview Link: ' + preview);
+                            output += 'Preview Link: ' + preview + '\n';
                         } else {
-                            console.log('Preview Link: No Preview Link Available');
+                            output += 'Preview Link: No Preview Link Available' + '\n';
                         }
-                        console.log('Album:        ' + data.tracks.items[i].album.name);
+                        output += 'Album:        ' + data.tracks.items[i].album.name + '\n';
                     }
-                    console.log('---------------------------------------------------');
+                    output += '---------------------------------------------------' + '\n';
+                    console.log(output);
+                    fs.appendFile('output.txt', output + '\n\n', function(error) {
+                        if (error) {
+                            console.log(err);
+                        } else {
+                            console.log("Content Added!");
+                        }
+                    });
                 }); 
             }
             break;
@@ -107,15 +134,23 @@ function liri(command, input) {
                 input = 'Mr.+Nobody'
             }
             axiosCall(input).then(data => {
-                // console.log(JSON.stringify(data, null, 2))
-                console.log('Title:                  ' + data.Title);
-                console.log('Release Year:           ' + data.Year);
-                console.log('IMDB Rating:            ' + data.imdbRating);
-                console.log('Rotton Tomatoes Rating: ' + data.Ratings[1].Value);
-                console.log('Country Produced In:    ' + data.Country);
-                console.log('Language/s:             ' + data.Language);
-                console.log('Plot:                   ' + data.Plot);
-                console.log('Actors:                 ' + data.Actors);
+                let output = '';
+                output += 'Title:                  ' + data.Title + '\n';
+                output += 'Release Year:           ' + data.Year + '\n';
+                output += 'IMDB Rating:            ' + data.imdbRating + '\n';
+                output += 'Rotton Tomatoes Rating: ' + data.Ratings[1].Value + '\n';
+                output += 'Country Produced In:    ' + data.Country + '\n';
+                output += 'Language/s:             ' + data.Language + '\n';
+                output += 'Plot:                   ' + data.Plot + '\n';
+                output += 'Actors:                 ' + data.Actors + '\n';
+                console.log(output);
+                fs.appendFile('output.txt', output + '\n\n', function(error) {
+                    if (error) {
+                        console.log(err);
+                    } else {
+                        console.log("Content Added!");
+                    }
+                });
             }).catch(function(error) {
                 console.log(error)
             });
@@ -134,6 +169,13 @@ function liri(command, input) {
     }
 }
 
+fs.appendFile('output.txt', (command + ' ' + process.argv.slice(3).join(' ') + '\n'), function(error) {
+    if (error) {
+      console.log(err);
+    } else {
+      console.log("Content Added!");
+    }
+});
 liri(command, process.argv.slice(3).join('+'));
 
 
