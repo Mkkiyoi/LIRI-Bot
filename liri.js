@@ -5,6 +5,7 @@ let spotify = new Spotify(keys.spotify);
 let axios = require('axios');
 let moment = require('moment');
 let fs = require('fs');
+let inquirer = require('inquirer');
 
 
 let command;
@@ -72,6 +73,7 @@ function liri(command, input) {
                     } else {
                         console.log("Content Added!");
                     }
+                    searchAgain();
                 });
             }).catch(function(error) {
                 console.log(error)
@@ -93,6 +95,7 @@ function liri(command, input) {
                             } else {
                               console.log("Content Added!");
                             }
+                            searchAgain();
                         });
                     })
                     .catch(function(err) {
@@ -125,9 +128,11 @@ function liri(command, input) {
                         } else {
                             console.log("Content Added!");
                         }
+                        searchAgain();
                     });
                 }); 
             }
+            
             break;
         case 'movie-this':
             if (!input) { 
@@ -150,6 +155,7 @@ function liri(command, input) {
                     } else {
                         console.log("Content Added!");
                     }
+                    searchAgain();
                 });
             }).catch(function(error) {
                 console.log(error)
@@ -178,4 +184,40 @@ fs.appendFile('output.txt', (command + ' ' + process.argv.slice(3).join(' ') + '
 });
 liri(command, process.argv.slice(3).join('+'));
 
-
+function searchAgain() {
+    inquirer.prompt([
+        {
+            type: 'confirm',
+            name: 'searchAgain',
+            message: 'Do you want to search for something else?',
+            default: false
+        },
+        {
+            when: (response) => {
+                return response.searchAgain;
+            },
+            type: 'list',
+            name: 'command',
+            message: 'Which type of search do you want to do?',
+            choices: [
+                'concert-this',
+                'spotify-this-song',
+                'movie-this',
+                'do-what-it-says'
+            ]
+        },
+        {
+            when: (response) => {
+                return response.searchAgain
+            },
+            name: 'input',
+            message: 'What do you want to search for? (enter an artist/band, song, or movie)'
+        }
+    ]).then((response) => {
+        console.log(response.searchAgain);
+        if (response.searchAgain) {
+            console.log(response.command + ' ' + response.input.split(' ').join('+'))
+            liri(response.command, response.input.split(' ').join('+'));
+        }
+    });
+}
