@@ -1,3 +1,8 @@
+/*
+ * liri.js is node application implementing a language interpretation recognition interface that takes user input via the console and outputs the desired content.
+ */
+
+ // Import node modules
 require('dotenv').config();
 let Spotify = require('node-spotify-api');
 let keys = require('./keys.js');
@@ -7,7 +12,7 @@ let moment = require('moment');
 let fs = require('fs');
 let inquirer = require('inquirer');
 
-
+// Check if a command was given as a second argument. If not ask the user to provide one.
 let command;
 if (!process.argv[2]) {
     console.log('Need to provide a command as an argument.');
@@ -15,6 +20,11 @@ if (!process.argv[2]) {
     command = process.argv[2]
 }
 
+/**
+ * axiosCall takes a given input and sends an api call via the axios node module to either bandsintown or omdbapi.
+ * The input parameter is the user input of what we are seaching for.
+ * @param {String} input 
+ */
 function axiosCall(input) {
     let queryURL;
     if (command === 'concert-this') {
@@ -26,8 +36,6 @@ function axiosCall(input) {
         return response.data;
     }).catch(function(error) {
         if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
             console.log('---------------Data---------------');
             console.log(error.response.data);
             console.log('---------------Status---------------');
@@ -35,16 +43,18 @@ function axiosCall(input) {
             console.log('---------------Status---------------');
             console.log(error.response.headers);
         } else if (error.request) {
-            // The request was made but no response was received
-            // `error.request` is an object that comes back with details pertaining to the error that occurred.
             console.log(error.request);
         } else {
-            // Something happened in setting up the request that triggered an Error
             console.log('Error', error.message);
         }
     });
 }
 
+/**
+ * liri processes the given user input and makes api calls to log the returned information.
+ * @param {String} command 
+ * @param {String} input 
+ */
 function liri(command, input) {
     switch (command) {
         case 'concert-this':
@@ -132,7 +142,6 @@ function liri(command, input) {
                     });
                 }); 
             }
-            
             break;
         case 'movie-this':
             if (!input) { 
@@ -163,13 +172,14 @@ function liri(command, input) {
             break;
         case 'do-what-it-says':
             fs.readFile("random.txt", "utf8", function(error, data) {
-                // If the code experiences any errors it will log the error to the console.
                 if (error) {
                     return console.log(error);
                 }
-                // Then split it by commas (to make it more readable)
-                let dataArr = data.split(",");
-                liri(dataArr[0], dataArr[1].substring(1,dataArr[1].length - 2).split(' ').join('+'));
+                let randomCommands = data.split('\n');
+                randomCommands.forEach((line) => {
+                    let dataArr = line.split(',');
+                    liri(dataArr[0], dataArr[1].substring(1,dataArr[1].length - 1).split(' ').join('+'));
+                });
             });
             break;
     }
@@ -184,6 +194,11 @@ fs.appendFile('output.txt', (command + ' ' + process.argv.slice(3).join(' ') + '
 });
 liri(command, process.argv.slice(3).join('+'));
 
+/**
+ * searchAgain uses inquirer to prompt the user if they want to conduct another search. 
+ * If so runs liri() with the users choices.
+ * If not, function terminates.
+ */
 function searchAgain() {
     inquirer.prompt([
         {
