@@ -29,6 +29,8 @@
 * Now that the .env file has been created, you can run the function as follows:
   * `node liri.js '<command> <user input>'`
 * User input is either an artist/band, song name, or movie name.
+* After a search has returned successfully, `liri.js` will output the desired information to both the console and to a file `output.js`. 
+* At the very end, the node application will use `inquirer` to ask the user if they want to search again.
 
 
 __NOTE__: All files, including the .env file, must be located in the same directory. 
@@ -40,6 +42,7 @@ __NOTE__: All files, including the .env file, must be located in the same direct
 * [axios](https://www.npmjs.com/package/axios)
 * [moment](https://www.npmjs.com/package/moment)
 * [fs](https://nodejs.org/api/fs.html)
+* [inquirer]((https://www.npmjs.com/package/inquirer))
 
 ## __Assets__
 * Javascript for the node application can be found [here](liri.js).
