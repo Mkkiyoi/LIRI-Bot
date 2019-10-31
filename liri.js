@@ -81,7 +81,7 @@ function liri(command, input) {
                     if (error) {
                         console.log(err);
                     } else {
-                        console.log("Content Added!");
+                        console.log("Content Added!\n");
                     }
                     searchAgain();
                 });
@@ -103,7 +103,7 @@ function liri(command, input) {
                             if (error) {
                               console.log(err);
                             } else {
-                              console.log("Content Added!");
+                              console.log("Content Added!\n");
                             }
                             searchAgain();
                         });
@@ -136,7 +136,7 @@ function liri(command, input) {
                         if (error) {
                             console.log(err);
                         } else {
-                            console.log("Content Added!");
+                            console.log("Content Added!\n");
                         }
                         searchAgain();
                     });
@@ -162,7 +162,7 @@ function liri(command, input) {
                     if (error) {
                         console.log(err);
                     } else {
-                        console.log("Content Added!");
+                        console.log("Content Added!\n");
                     }
                     searchAgain();
                 });
@@ -189,7 +189,7 @@ fs.appendFile('output.txt', (command + ' ' + process.argv.slice(3).join(' ') + '
     if (error) {
       console.log(err);
     } else {
-      console.log("Content Added!");
+      console.log("Content Added!\n");
     }
 });
 liri(command, process.argv.slice(3).join('+'));

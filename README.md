@@ -1,8 +1,5 @@
 # LIRI-Bot
 
-## __Live Version of the Site__
-* [LIRI Bot](https://mkkiyoi.github.io/LIRI-Bot)
-
 ## __What is LIRI Bot?__
 * LIRI (Language Interpretation and Recognition Interface) Bot is a command line node application that takes in one of four commands and outputs data corresponding to given user input.
 * LIRI Bot Commands are as follows:
@@ -34,6 +31,30 @@
 
 
 __NOTE__: All files, including the .env file, must be located in the same directory. 
+
+
+## __Examples Using LIRI Bot__
+
+`node liri concert-this taylor swift`
+![concert-this-with-input.png](assets/images/concert-this-with-input.png)
+
+`node liri spotify-this-song`
+![spotify-this-song-no-input.png](assets/images/spotify-this-song-no-input.png)
+
+`node liri spotify-this-song long tomorrow`
+![spotify-this-song-with-input.png](assets/images/spotify-this-song-with-input.png)
+
+`node liri movie-this`
+![movie-this-no-input.png](assets/images/movie-this-no-input.png)
+
+`node liri movie-this up`
+![movie-this-with-input.png](assets/images/movie-this-with-input.png)
+
+`node liri do-what-it-says`
+![do-what-it-says.png](assets/images/do-what-it-says.png)
+
+`node liri movie-this up` + `spotify-this-song long tomorrow`
+![search-again.png](assets/images/search-again.png)
 
 
 ## __Node Modules used in LIRI Bot__
