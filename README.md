@@ -68,4 +68,5 @@ __NOTE__: All files, including the .env file, must be located in the same direct
 ## __Assets__
 * Javascript for the node application can be found [here](liri.js).
 * Spotify key handling can be found [here](keys.js).
+* Image assets can be found [here](assets/images).
 
